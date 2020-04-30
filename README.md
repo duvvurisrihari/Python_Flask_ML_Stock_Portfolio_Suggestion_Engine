@@ -8,9 +8,9 @@ CMPE 285
 
 Team members
 
--Apoorva
--Ashwin
--Sri Hari
--Sruthi
--Shubhangi
--Vamsi
+- Apoorva
+- Ashwin
+- Sri Hari
+- Sruthi
+- Shubhangi
+- Vamsi
