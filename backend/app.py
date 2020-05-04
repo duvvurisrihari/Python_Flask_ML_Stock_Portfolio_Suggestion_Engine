@@ -7,6 +7,7 @@ import os
 import requests
 import datetime
 import pytz
+import csv
   
 # creating a Flask app 
 app = Flask(__name__) 
@@ -70,6 +71,59 @@ def getStatistics():
 def hometest(companyName):
     r = requests.get('https://cloud.iexapis.com/stable/stock/' + companyName + '/quote?token=' +  API_KEY)
     
+    
+
+
+    r1 = requests.get('https://sandbox.iexapis.com/stable/stock/ADBE/chart/1y?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+    
+    alldates1=[]
+    with open('stockdata.csv', mode='w') as stock_file:
+        stock_writer = csv.writer(stock_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for x in r1.json():
+            alldates1.append(x['date'])
+            
+            stock_writer.writerow([x['date'],x['open'], x['close'] ])
+
+    
+    enddate= datetime.datetime(2020, 5, 2)
+    currentdate=datetime.datetime(2019, 5, 2)
+    alldates = []
+    
+    while currentdate<=enddate:
+        flag = False
+        for x in r1.json():
+        #    print((x['date']))
+        #    print(str(currentdate.date()))
+            if (x['date']) == str(currentdate.date()):
+                flag = True
+                obj = {}
+                obj['date'] = x['date']
+                obj['open'] = x['open']
+                obj['close'] = x['close']
+                obj['volume'] = x['volume']
+                obj['change'] = x['change']
+                obj['changePercent'] = x['changePercent']
+                alldates.append(obj)
+                break
+        if flag==False:
+            print(currentdate.date())
+            l = len(alldates) - 1
+            alldates.append(alldates[l])
+        currentdate = currentdate + datetime.timedelta(days=1)
+
+    print(alldates)
+    
+    with open('stockdata.csv', mode='w') as stock_file:
+        stock_writer = csv.writer(stock_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for x in alldates:
+            stock_writer.writerow([x['date'],x['open'], x['close'],x['volume'],x['change'],x['changePercent']])
+
+    return jsonify(alldates)
+
+    
+
+
+
     print(r.status_code)
 
     if(r.status_code == 200):
@@ -115,7 +169,7 @@ def home():
   
 # driver function 
 if __name__ == '__main__': 
-    #app.run(debug=True)
-    app.run(host='0.0.0.0', port = 5001)
+    app.run(debug=True)
+    #app.run(host='0.0.0.0', port = 5001)
 
 # app.run(debug= True) # This has to be used while debugging. The other while deployment.
