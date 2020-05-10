@@ -67,6 +67,43 @@ def getStatistics():
         'status': 'success'
     })
 
+@app.route('/portfolioGraphData', methods = ['POST'])
+def portfolioGraphData():
+    #print(request.json) # If you send json body, you have to access like this only # https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
+
+    label = []
+    value = []
+
+    # Prepping arrays for sending
+    r = requests.get('https://sandbox.iexapis.com/stable/stock/ADBE/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+    for x in r.json():
+        label.append(x['date'])
+        value.append(0)
+    print(label)
+    print(value)
+
+    # Looping through each object of the request array
+    for company in request.get_json()['data']:
+        #print(company)
+        r = requests.get('https://sandbox.iexapis.com/stable/stock/' + company['company'] + '/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+
+        # Adding values to portfolio array
+        i = 0
+        for x in r.json():
+            print(x['close'])
+            value[i] = value[i] + company['count'] * x['close']
+            i = i + 1
+
+    print(label)
+    print(value)   
+
+    # Putting label and value into result object.
+    result = {}
+    result['label'] = label
+    result['value'] = value    
+
+    return result
+
 @app.route('/test/<companyName>', methods = ['GET'])
 def hometest(companyName):
     r = requests.get('https://cloud.iexapis.com/stable/stock/' + companyName + '/quote?token=' +  API_KEY)
