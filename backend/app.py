@@ -72,17 +72,17 @@ def hometest(companyName):
     r = requests.get('https://cloud.iexapis.com/stable/stock/' + companyName + '/quote?token=' +  API_KEY)
     
     
-    companies = ['ADBE', 'GOOG', 'AMZN']
+    companies = ['DIS', 'NVO', 'MSFT', 'GOOGL', 'NEE', 'BEP', 'ENPH', 'AMZN', 'VEEV', 'TER', 'NVDA', 'NFLX', 'VRTX', 'NOW', 'ADBE', 'VTI', 'IXUS', 'ILTB', 'ZEN', 'T', 'VZ', 'AAXN', 'TERP', 'IRBT', 'W', 'STZ', 'CTRE', 'CVS', 'FDX', 'ALL', 'AZO', 'ALB', 'BTI', 'VIAC', 'ALXN', 'URI' , 'ETN']
 
     with open('stockdata.csv', mode='w') as stock_file:
         stock_writer = csv.writer(stock_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        
+        stock_writer.writerow(['company', 'date', 'open', 'close', 'volume', 'change', 'changePercent'])
 
         for i in companies:
-            r1 = requests.get('https://sandbox.iexapis.com/stable/stock/' + i + '/chart/1y?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+            r1 = requests.get('https://sandbox.iexapis.com/stable/stock/' + i + '/chart/5y?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
             
             enddate= datetime.datetime(2020, 5, 2)
-            currentdate=datetime.datetime(2019, 5, 6)
+            currentdate=datetime.datetime(2015, 5, 11)
             alldates = []
             
             while currentdate<=enddate:
