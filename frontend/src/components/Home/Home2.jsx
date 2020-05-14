@@ -124,18 +124,21 @@ class App extends Component {
                         </div>
                         <Divider />
                     </Typography>
+                    <Row><Col span={20} offset={0}>
+                        <div className="stepsClass text-light">
+                            <Steps direction="horizontal" size="small" current={this.state.current}>
+                                <Step title="Investment Amount" description="Enter Amount in USD" />
+                                <Step title="Choose Investment Strategy"
+                                    description="Choose upto 2 Strategies" />
+                                <Step title="Confirm" description="Check Input" />
+                            </Steps>
+                        </div>
+                    </Col></Row>
+                    <br />
+                    <br />
                     <Row>
-                        <Col span={8} offset={1}>
-                            <div className="stepsClass text-light">
-                                <Steps direction="vertical" size="small" current={this.state.current}>
-                                    <Step title="Investment Amount" description="Enter Amount in USD" />
-                                    <Step title="Choose Investment Strategy"
-                                        description="Choose upto 2 Strategies" />
-                                    <Step title="Confirm" description="Check Input" />
-                                </Steps>
-                            </div>
-                        </Col>
-                        <Col span={10} offset={2}>
+
+                        <Col span={10} offset={10}>
                             <div className="contentClass">
                                 <Form {...formItemLayout}>
                                     {(this.state.current === 0 &&
@@ -188,7 +191,8 @@ class App extends Component {
                             </div>
                         </Col>
                     </Row>
-
+                    <br />
+                    <br />
                     <Row>
                         <Col span={6} offset={9}>
                             {!this.state.enableBack &&
