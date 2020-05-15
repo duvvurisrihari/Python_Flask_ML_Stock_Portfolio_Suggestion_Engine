@@ -1,6 +1,6 @@
-# Using flask to make an api 
-# import necessary libraries and functions 
-from flask import Flask, jsonify, request 
+# Using flask to make an api
+# import necessary libraries and functions
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
@@ -8,74 +8,27 @@ import requests
 import datetime
 import pytz
 import csv
-  
-# creating a Flask app 
-app = Flask(__name__) 
-CORS(app) # Let the api acces for frontends.
+
+# creating a Flask app
+app = Flask(__name__)
+CORS(app)  # Let the api acces for frontends.
 load_dotenv()
 
 
 API_KEY = os.getenv("API_KEY")
 print(API_KEY)
-  
-# enter valid values for the data, you will get results. this is for  calculator API
-@app.route('/stats/', methods = ['POST'])
-def getStatistics():
-    print(request.json) # If you send json body, you have to access like this only # https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
-    body = request.get_json()
-    
-    initialPrice = body.get("initialPrice")
-    sellingPrice = body.get("sellingPrice")
-    buyCommission = body.get("buyCommission")
-    sellCommission = body.get("sellCommission")
-    taxRate = body.get("taxRate")
-    count = body.get("count")
 
-    if(count <= 0):
-        return jsonify({
-            'status' : 'failure', 
-            'reason' : 'count cannot be less than or equal zero, Hypothetical!'
-        })
-
-    if(initialPrice <= 0 or sellingPrice <= 0 or buyCommission < 0 or sellCommission < 0 or taxRate < 0): 
-        return jsonify({
-            'status' : 'failure', 
-            'reason' : 'One of the data point have a invalid value'
-        })
-
-    proceeds = sellingPrice*count
-    initialCost = count*initialPrice + buyCommission + sellCommission
-    absoluteProfit = proceeds - initialCost
-    tax = absoluteProfit*(taxRate/100)
-    netProfit = absoluteProfit - tax
-    cost = initialCost + tax        # this if for answer's sake
-    roi = (netProfit/cost)*100
-    breakEven = initialCost/count
-
-    if(absoluteProfit <= 0):
-        return jsonify({
-            'status' : 'failure', 
-            'reason' : 'You won"t get any money from this sale'
-        })
-
-    return jsonify({
-        'proceeds': round(proceeds, 2), 
-        'cost': round(cost, 2), 
-        'netProfit': round(netProfit, 2), 
-        'roi': round(roi, 2),
-        'breakEven': round(breakEven, 2), 
-        'status': 'success'
-    })
-
-@app.route('/portfolioGraphData', methods = ['POST'])
+# For weekly trend of portfolio values
+@app.route('/portfolioGraphData', methods=['POST'])
 def portfolioGraphData():
-    #print(request.json) # If you send json body, you have to access like this only # https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
+    # print(request.json) # If you send json body, you have to access like this only # https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
 
     label = []
     value = []
 
     # Prepping arrays for sending
-    r = requests.get('https://sandbox.iexapis.com/stable/stock/ADBE/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+    r = requests.get(
+        'https://sandbox.iexapis.com/stable/stock/ADBE/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
     for x in r.json():
         label.append(x['date'])
         value.append(0)
@@ -84,8 +37,9 @@ def portfolioGraphData():
 
     # Looping through each object of the request array
     for company in request.get_json()['data']:
-        #print(company)
-        r = requests.get('https://sandbox.iexapis.com/stable/stock/' + company['company'] + '/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+        # print(company)
+        r = requests.get('https://sandbox.iexapis.com/stable/stock/' +
+                         company['company'] + '/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
 
         # Adding values to portfolio array
         i = 0
@@ -95,38 +49,43 @@ def portfolioGraphData():
             i = i + 1
 
     print(label)
-    print(value)   
+    print(value)
 
     # Putting label and value into result object.
     result = {}
     result['label'] = label
-    result['value'] = value    
+    result['value'] = value
 
     return result
 
-@app.route('/test/<companyName>', methods = ['GET'])
+# For making csv
+@app.route('/test/<companyName>', methods=['GET'])
 def hometest(companyName):
-    r = requests.get('https://cloud.iexapis.com/stable/stock/' + companyName + '/quote?token=' +  API_KEY)
-    
-    
-    companies = ['DIS', 'NVO', 'MSFT', 'GOOGL', 'NEE', 'BEP', 'ENPH', 'AMZN', 'VEEV', 'TER', 'NVDA', 'NFLX', 'VRTX', 'NOW', 'ADBE', 'VTI', 'IXUS', 'ILTB', 'ZEN', 'T', 'VZ', 'AAXN', 'TERP', 'IRBT', 'W', 'STZ', 'CTRE', 'CVS', 'FDX', 'ALL', 'AZO', 'ALB', 'BTI', 'VIAC', 'ALXN', 'URI' , 'ETN']
+    r = requests.get('https://cloud.iexapis.com/stable/stock/' +
+                     companyName + '/quote?token=' + API_KEY)
+
+    companies = ['DIS', 'NVO', 'MSFT', 'GOOGL', 'NEE', 'BEP', 'ENPH', 'AMZN', 'VEEV', 'TER', 'NVDA', 'NFLX', 'VRTX', 'NOW', 'ADBE', 'VTI', 'IXUS',
+                 'ILTB', 'ZEN', 'T', 'VZ', 'AAXN', 'TERP', 'IRBT', 'W', 'STZ', 'CTRE', 'CVS', 'FDX', 'ALL', 'AZO', 'ALB', 'BTI', 'VIAC', 'ALXN', 'URI', 'ETN']
 
     with open('stockdata.csv', mode='w') as stock_file:
-        stock_writer = csv.writer(stock_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        stock_writer.writerow(['company', 'date', 'open', 'close', 'volume', 'change', 'changePercent'])
+        stock_writer = csv.writer(
+            stock_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        stock_writer.writerow(
+            ['company', 'date', 'open', 'close', 'volume', 'change', 'changePercent'])
 
         for i in companies:
-            r1 = requests.get('https://sandbox.iexapis.com/stable/stock/' + i + '/chart/5y?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
-            
-            enddate= datetime.datetime(2020, 5, 2)
-            currentdate=datetime.datetime(2015, 5, 11)
+            r1 = requests.get('https://sandbox.iexapis.com/stable/stock/' +
+                              i + '/chart/5y?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+
+            enddate = datetime.datetime(2020, 5, 2)
+            currentdate = datetime.datetime(2015, 5, 11)
             alldates = []
-            
-            while currentdate<=enddate:
+
+            while currentdate <= enddate:
                 flag = False
                 for x in r1.json():
-                #    print((x['date']))
-                #    print(str(currentdate.date()))
+                    #    print((x['date']))
+                    #    print(str(currentdate.date()))
                     if (x['date']) == str(currentdate.date()):
                         flag = True
                         obj = {}
@@ -139,8 +98,8 @@ def hometest(companyName):
                         obj['changePercent'] = x['changePercent']
                         alldates.append(obj)
                         break
-                if flag==False:
-                    #print(currentdate.date())
+                if flag == False:
+                    # print(currentdate.date())
                     l = len(alldates) - 1
                     obj = {}
                     obj['company'] = i
@@ -154,59 +113,25 @@ def hometest(companyName):
                 currentdate = currentdate + datetime.timedelta(days=1)
 
             for x in alldates:
-                stock_writer.writerow([x['company'],x['date'],x['open'], x['close'],x['volume'],x['change'],x['changePercent']])
-    
-    return jsonify(alldates) # Returning some data.
+                stock_writer.writerow([x['company'], x['date'], x['open'],
+                                       x['close'], x['volume'], x['change'], x['changePercent']])
 
-    
-
+    return jsonify(alldates)  # Returning some data.
 
 
-    print(r.status_code)
+# on the terminal type: curl http://127.0.0.1:5000/
+# returns hello world when we use GET.
+# returns the data that we send when we use POST.
+@app.route('/', methods=['GET'])
+def home():
+    if(request.method == 'GET'):
 
-    if(r.status_code == 200):
-        time = datetime.datetime.now(tz=pytz.utc).strftime("%Y-%m-%d %H:%M:%S") + ' : UTC'
-        fullName = r.json().get("companyName")
-        latestStockPrice = r.json().get("iexRealtimePrice")
-        
-        valueChanges = round((r.json().get("change")), 2) # valueChanges will be a float
-        if(valueChanges > 0):
-            valueChanges = '+' + str(valueChanges) + ' $'
-        else:
-            valueChanges = str(valueChanges) + ' $'
-
-        percentageChanges = round((r.json().get("changePercent"))*100, 2)
-        if(percentageChanges > 0):
-            percentageChanges = '+' + str(percentageChanges) + ' %'
-        else:
-            percentageChanges = str(percentageChanges) + ' %'
-        
-        return jsonify({
-            'time' : time, 
-            'fullName' : fullName,
-            'latestStockPrice' : latestStockPrice, 
-            'valueChanges' : valueChanges, 
-            'percentageChanges' : percentageChanges
-        })
-    elif(r.status_code == 404):
-        return "Aborted with 404", 404
-    else:
-        return "Internal Server Error", 500
-
-    return r.json()
-
-# on the terminal type: curl http://127.0.0.1:5000/ 
-# returns hello world when we use GET. 
-# returns the data that we send when we use POST. 
-@app.route('/', methods = ['GET']) 
-def home(): 
-    if(request.method == 'GET'): 
-  
         data = "hello world"
-        return jsonify({'data': data}) 
-  
-# driver function 
-if __name__ == '__main__': 
+        return jsonify({'data': data})
+
+
+# driver function
+if __name__ == '__main__':
     app.run(debug=True)
     #app.run(host='0.0.0.0', port = 5001)
 
