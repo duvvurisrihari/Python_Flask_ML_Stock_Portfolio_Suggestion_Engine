@@ -148,7 +148,7 @@ def stockSuggestions():
     for strategy in strategies:
       companiesToConsider = companiesToConsider + companies[strategy]
 
-    with open('t-30change-companies.csv', newline='') as companyFile:
+    with open('t-30change-companies-new.csv', newline='') as companyFile:
         companyReader = csv.reader(companyFile, delimiter=',')
         firstline = True
         for row in companyReader:
@@ -169,6 +169,7 @@ def stockSuggestions():
         latestprice = companyDetails.json()['latestPrice']
         obj = {}
         obj['company'] = company
+        obj['name'] = companyDetails.json()['companyName']
         if i == 0:
             numberOfStocks = ((0.50) * amount) // latestprice
             obj['count'] = int(numberOfStocks)
@@ -177,6 +178,11 @@ def stockSuggestions():
             numberOfStocks = ((0.25) * amount) // latestprice
             obj['count'] = int(numberOfStocks)
             residue = round(residue + (((0.25) * amount) - (numberOfStocks * latestprice)), 2)
+        
+        for strategy in strategies:
+            if company in companies[strategy]:
+                obj['strategy'] = strategy
+
         i = i + 1
         data.append(obj)
 
