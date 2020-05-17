@@ -19,3 +19,17 @@ sudo pip3 install -U requests
 Note: Python3 is a pre-req for this to run in any system. Check if pip3 is also there.
 
 --------------------------- .env should be there that should contain API KEY from iexcould site.
+
+### ML and Deep Learning packages installations using conda 
+
+scikit learn, pandas, numpy, keras, 
+
+conda install Keras 
+
+conda install -c anaconda scikit-learn 
+
+conda install pandas
+
+conda install numpy
+
+
