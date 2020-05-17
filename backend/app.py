@@ -9,6 +9,19 @@ import datetime
 import pytz
 import csv
 
+companies = {}
+EthicalInvestingList  = ['DIS','NVO','MSFT','GOOGL','NEE','BEP','ENPH'] 
+GrowthInvestingList  = ['AMZN','VEEV','TER','NVDA','NFLX','VRTX','NOW','ADBE'] 
+IndexInvestingList  = ['VTI','IXUS','ILTB'] 
+QualityInvestingList  = ['ZEN','T','VZ','AAXN','TERP','IRBT','W','STZ','STZ','CTRE'] 
+ValueInvestingList  = ['CVS','FDX','ALL','AZO','ALB','BTI','VIAC','ALXN','URI','ETN'] 
+
+companies['ethical'] = EthicalInvestingList
+companies['growth'] = GrowthInvestingList
+companies['index'] = IndexInvestingList
+companies['quality'] = QualityInvestingList
+companies['value'] = ValueInvestingList
+
 # creating a Flask app
 app = Flask(__name__)
 CORS(app)  # Let the api acces for frontends.
@@ -117,6 +130,61 @@ def hometest(companyName):
                                        x['close'], x['volume'], x['change'], x['changePercent']])
 
     return jsonify(alldates)  # Returning some data.
+
+
+# For investment suggestions in companies
+@app.route('/stockSuggestions', methods=['POST'])
+def stockSuggestions():
+    # print(request.json) # If you send json body, you have to access like this only # https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
+    strategies = request.get_json()['investmentStrategies']
+    amount = request.get_json()['investmentAmount']
+
+    label = []
+    value = []
+    residue = 0
+    companiesToConsider = []
+    finalCompanies = []
+
+    for strategy in strategies:
+      companiesToConsider = companiesToConsider + companies[strategy]
+
+    with open('t-30change-companies.csv', newline='') as companyFile:
+        companyReader = csv.reader(companyFile, delimiter=',')
+        firstline = True
+        for row in companyReader:
+            if firstline:    #skip first row
+                firstline = False
+                continue
+            if row[0] in companiesToConsider:
+                size = len(finalCompanies)
+                if size < 3:
+                    finalCompanies = finalCompanies + [row[0]]
+                elif size == 3:
+                    break
+
+    data= []
+    i = 0
+    for company in finalCompanies:
+        companyDetails = requests.get('https://sandbox.iexapis.com/stable/stock/' + company + '/quote?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+        latestprice = companyDetails.json()['latestPrice']
+        obj = {}
+        obj['company'] = company
+        if i == 0:
+            numberOfStocks = ((0.50) * amount) // latestprice
+            obj['count'] = int(numberOfStocks)
+            residue = round(residue + (((0.50) * amount) - (numberOfStocks * latestprice)), 2)
+        else:
+            numberOfStocks = ((0.25) * amount) // latestprice
+            obj['count'] = int(numberOfStocks)
+            residue = round(residue + (((0.25) * amount) - (numberOfStocks * latestprice)), 2)
+        i = i + 1
+        data.append(obj)
+
+    result = {}
+    result['data'] = data
+    result['residue'] = residue
+
+    return result
 
 
 # on the terminal type: curl http://127.0.0.1:5000/
