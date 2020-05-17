@@ -8,21 +8,21 @@ class Form extends Component {
         script.innerHTML = JSON.stringify({
             "symbols": [
                 {
-                    "proName": "FOREXCOM:SPXUSD",
-                    "title": "S&P 500"
-                },
-                {
-                    "proName": "FOREXCOM:NSXUSD",
-                    "title": "Nasdaq 100"
-                },
-                {
-                    "proName": "BITSTAMP:BTCUSD",
-                    "title": "BTC/USD"
-                },
-                {
-                    "proName": "BITSTAMP:ETHUSD",
-                    "title": "ETH/USD"
-                }
+                    "description": "Japanese Yen",
+                    "proName": "FX_IDC:USDJPY"
+                  },
+                  {
+                    "description": "Indian Rupee",
+                    "proName": "FX_IDC:USDINR"
+                  },
+                  {
+                    "description": "European Euro",
+                    "proName": "FX_IDC:USDEUR"
+                  },
+                  {
+                    "description": "British Pound",
+                    "proName": "FX_IDC:USDGBP"
+                  }
             ],
             colorTheme: "light",
             "isTransparent": true,
@@ -46,5 +46,4 @@ class Form extends Component {
 }
 
 export default Form;
-
 
