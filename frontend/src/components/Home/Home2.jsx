@@ -4,6 +4,7 @@ import { Steps, Row, Col, Button, message, Form, InputNumber, Select, Typography
 import './Home.styles.css';
 import TickerBar from '../TickerBar/TickerBar';
 import TickerTape from '../TickerBar/TickerTape';
+import GraphWidget from '../TickerBar/GraphWidget';
 const queryString = require('query-string');
 
 const { Title, Paragraph, Text } = Typography;
@@ -91,7 +92,7 @@ class App extends Component {
         query.strategy = this.state.selectedItems;
 
         const stringified = queryString.stringify(query);
-
+        // axios.post("http://localhost:5000/api",)
 
 
     }
@@ -120,7 +121,7 @@ class App extends Component {
                 <div className="box effect1 stockCard">
                     <Typography>
                         <div style={{ textAlign: 'center' }}>
-                            <Title level={2}> <a href="/" style={{ color: '#000' }}>Stock Suggestor </a></Title>
+                            <Title level={2}> <a href="/" style={{ color: '#000' }} className='display-4'>Stock Suggestor </a></Title>
                         </div>
                         <Divider />
                     </Typography>
@@ -216,25 +217,22 @@ class App extends Component {
 
 
                 </div>
-                <div className="box effect1" style={{ textAlign: 'center' }}>
-                    <Row>
-                        {/* <Col>
-                            <Typography>
-                                <Title level={4}> Market Overview Widget</Title>
-                            </Typography>
-                            Market Overview Widget provides a quick glance at the latest market activity across various
-                            sectors.
-                        </Col> */}
-                    </Row>
-                    <Row>
-                        <Col span={16} offset={4}>
-                        </Col>
-                        <Col span={12}></Col>
-                    </Row>
+                <br />
+                <br />
+                <br />
+                <div className="graph" style={{ textAlign: 'center' }} >
 
+                    <div style={{ width: '300px', marginTop: '5%' }}>
+                        <h3 className='display-3'>Get an overview of stocks</h3>
+                    </div>
+                    <GraphWidget />
+
+
+
+                </div >
+                <div style={{ marginTop: '10%' }}>
+                    <TickerTape />
                 </div>
-                <TickerTape />
-
             </div>
         );
     }
