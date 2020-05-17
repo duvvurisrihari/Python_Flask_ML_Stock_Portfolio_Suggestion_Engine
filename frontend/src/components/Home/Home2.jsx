@@ -72,8 +72,8 @@ class App extends Component {
     current: 0,
     showSubmit: false,
     enableBack: false,
-    validateNumberStatus: "success",
-    validateOptionStatus: "success",
+    amountValidation: "success",
+    statusValidation: "success",
     amount: 5000,
     selectedItems: [],
     results: {},
@@ -81,16 +81,16 @@ class App extends Component {
 
   handleNext = () => {
     if (this.state.current === 1 && this.state.selectedItems.length > 2) {
-      message.error("Select maximum of 2 Investment strategies");
+      message.error("Select a maximum of two strategies");
       this.setState({ validateOptionStatus: "error" });
     } else if (
       this.state.current === 1 &&
       this.state.selectedItems.length === 0
     ) {
-      message.error("Please select at-least 1 Investment strategy");
+      message.error("Select a minimum one strategy");
       this.setState({ validateOptionStatus: "error" });
     } else if (this.state.current === 0 && this.state.amount < 5000) {
-      message.error("Please select valid amount");
+      message.error("Enter amount greater than 5000");
     } else {
       this.setState({ validateOptionStatus: "success" });
       let newVal = this.state.current + 1;
@@ -208,10 +208,10 @@ class App extends Component {
                     description="Enter Amount in USD"
                   />
                   <Step
-                    title="Choose Investment Strategy"
-                    description="Choose upto 2 Strategies"
+                    title="Pick Investment Strategies"
+                    description="Select upto two"
                   />
-                  <Step title="Confirm" description="Check Input" />
+                  <Step title="Confirm" description="Verify Input" />
                 </Steps>
               </div>
             </Col>
@@ -225,7 +225,7 @@ class App extends Component {
                   {(this.state.current === 0 && (
                     <div>
                       <Form.Item
-                        validateStatus={this.state.validateNumberStatus}
+                        validateStatus={this.state.amountValidation}
                         help="Amount should be greater than $5000"
                         style={{ width: "100%" }}
                       >
@@ -247,7 +247,7 @@ class App extends Component {
                       <div>
                         <Form.Item
                           help="Pick one or two Investment strategies"
-                          validateStatus={this.state.validateOptionStatus}
+                          validateStatus={this.state.statusValidation}
                           style={{ width: "100%" }}
                         >
                           <Select

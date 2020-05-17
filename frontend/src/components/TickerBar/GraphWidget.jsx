@@ -22,6 +22,44 @@ class Form extends Component {
             "belowLineFillColorFalling": "rgba(33, 150, 243, 0.12)",
             "symbolActiveColor": "rgba(33, 150, 243, 0.12)",
             "tabs": [
+               
+                {
+                    "title": "Growth",
+                    "symbols": [
+                      {
+                        "s": "NASDAQ:AMZN",
+                        "d": "Amazon"
+                      },
+                      {
+                        "s": "NYSE:VEEV",
+                        "d": "Veeva Systems"
+                      },
+                      {
+                        "s": "NASDAQ:TER",
+                        "d": "Teradyne"
+                      },
+                      {
+                        "s": "NASDAQ:NVDA",
+                        "d": "NVidia"
+                      },
+                      {
+                        "s": "NASDAQ:NFLX",
+                        "d": "Netflix"
+                      },
+                      {
+                        "s": "NASDAQ:VRTX",
+                        "d": "Vertex"
+                      },
+                      {
+                        "s": "NYSE:NOW",
+                        "d": "Service Now"
+                      },
+                      {
+                        "s": "NASDAQ:ADBE",
+                        "d": "Adobe"
+                      }
+                    ]
+                  },               
                 {
                   "title": "Ethical",
                   "symbols": [
@@ -56,43 +94,7 @@ class Form extends Component {
                   ],
                   "originalTitle": "Indices"
                 },
-                {
-                  "title": "Growth",
-                  "symbols": [
-                    {
-                      "s": "NASDAQ:AMZN",
-                      "d": "Amazon"
-                    },
-                    {
-                      "s": "NYSE:VEEV",
-                      "d": "Veeva Systems"
-                    },
-                    {
-                      "s": "NASDAQ:TER",
-                      "d": "Teradyne"
-                    },
-                    {
-                      "s": "NASDAQ:NVDA",
-                      "d": "NVidia"
-                    },
-                    {
-                      "s": "NASDAQ:NFLX",
-                      "d": "Netflix"
-                    },
-                    {
-                      "s": "NASDAQ:VRTX",
-                      "d": "Vertex"
-                    },
-                    {
-                      "s": "NYSE:NOW",
-                      "d": "Service Now"
-                    },
-                    {
-                      "s": "NASDAQ:ADBE",
-                      "d": "Adobe"
-                    }
-                  ]
-                },
+                
                 {
                   "title": "Index",
                   "symbols": [
