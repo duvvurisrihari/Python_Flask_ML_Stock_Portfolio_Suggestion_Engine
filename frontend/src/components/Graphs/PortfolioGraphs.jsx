@@ -26,25 +26,10 @@ class PortfolioGraphs extends Component {
   }
 
   componentDidMount() {
-    const compData = {
-      data: [
-        {
-          company: "ADBE",
-          count: 10,
-        },
-        {
-          company: "GOOG",
-          count: 10,
-        },
-        {
-          company: "AAPL",
-          count: 10,
-        },
-      ],
-    };
+    const { results } = this.props;
 
     axios
-      .post(backendurl + "/portfolioGraphData", compData)
+      .post(backendurl + "/portfolioGraphData", results)
       .then((response) => {
         console.log(
           "the response from backend is " + JSON.stringify(response.data)
@@ -79,7 +64,6 @@ class PortfolioGraphs extends Component {
     return (
       <div>
         <Container>
-          <h1>Stock Portfolio Suggestion Engine</h1>
           <br />
           <br />
           <Row>

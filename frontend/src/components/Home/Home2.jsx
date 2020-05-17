@@ -19,6 +19,7 @@ import axios from "axios";
 import TickerBar from "../TickerBar/TickerBar";
 import TickerTape from "../TickerBar/TickerTape";
 import GraphWidget from "../TickerBar/GraphWidget";
+import PortfolioGraphs from "../Graphs/PortfolioGraphs";
 const queryString = require("query-string");
 
 const { Title, Paragraph, Text } = Typography;
@@ -152,7 +153,7 @@ class App extends Component {
     const { selectedItems, results } = this.state;
     const formatedSelectedItems = selectedItems.join(" & ");
     const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
-    let displayResults, residue;
+    let displayResults, residue, displayGraph;
 
     if (results) {
       if (Array.isArray(results.data) && results.data.length) {
@@ -171,6 +172,8 @@ class App extends Component {
             </Col>
           );
         });
+
+        displayGraph = <PortfolioGraphs results={results} />;
       }
       if (results.residue) {
         residue = results.residue;
@@ -316,6 +319,9 @@ class App extends Component {
           {displayResults}{" "}
         </Row>
         {residue ? <Text strong>Residue Amount:{residue} </Text> : ""}
+
+        {displayGraph}
+
         <br />
         <br />
         <div className="graph" style={{ textAlign: "center" }}>
