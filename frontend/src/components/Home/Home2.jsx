@@ -11,6 +11,7 @@ import {
   Select,
   Typography,
   Divider,
+  Alert,
 } from "antd";
 import "./Home.styles.css";
 import { Card } from "react-bootstrap";
@@ -160,15 +161,21 @@ class App extends Component {
         displayResults = results.data.map((result, index) => {
           return (
             <Col key={index}>
-              <Card bg="white" style={{ width: "15rem", margin: "1rem" }}>
+              <Card border="primary" style={{ width: "18rem" }}>
+                <Card.Header>{result.company}</Card.Header>
                 <Card.Body>
-                  <Card.Title>{result.company}</Card.Title>
+                  <Card.Title>{result.name}</Card.Title>
                   <Card.Text>
-                    <b>Number of stocks: </b>
+                    Number of stocks:
                     {result.count}
+                  </Card.Text>
+                  <Card.Text>
+                    Investment Strategy:
+                    {result.strategy}
                   </Card.Text>
                 </Card.Body>
               </Card>
+              <br />
             </Col>
           );
         });
@@ -314,11 +321,26 @@ class App extends Component {
           </Row>
         </div>
         <br />
-        <Row gutter={[16, 16]} offset={9}>
-          {" "}
-          {displayResults}{" "}
-        </Row>
-        {residue ? <Text strong>Residue Amount:{residue} </Text> : ""}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Row gutter={[16, 16]} span={10} offset={9}>
+            {" "}
+            {displayResults}{" "}
+          </Row>
+        </div>
+
+        {residue ? (
+          <Text color="#ff7875" strong>
+            Residue Amount: {residue}{" "}
+          </Text>
+        ) : (
+          ""
+        )}
 
         {displayGraph}
 
