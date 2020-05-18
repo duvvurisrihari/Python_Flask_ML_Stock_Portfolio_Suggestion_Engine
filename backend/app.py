@@ -173,10 +173,16 @@ def stockSuggestions():
         if i == 0:
             numberOfStocks = ((0.50) * amount) // latestprice
             obj['count'] = int(numberOfStocks)
+            obj['currentPrice']=latestprice
+            obj['investedAmount']=numberOfStocks*latestprice
+            obj['percentageInvested']=(numberOfStocks*latestprice*100)/(amount)
             residue = round(residue + (((0.50) * amount) - (numberOfStocks * latestprice)), 2)
         else:
             numberOfStocks = ((0.25) * amount) // latestprice
             obj['count'] = int(numberOfStocks)
+            obj['currentPrice']=latestprice
+            obj['investedAmount']=numberOfStocks*latestprice
+            obj['percentageInvested']=(numberOfStocks*latestprice*100)/(amount)
             residue = round(residue + (((0.25) * amount) - (numberOfStocks * latestprice)), 2)
         
         for strategy in strategies:

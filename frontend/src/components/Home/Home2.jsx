@@ -80,6 +80,10 @@ class App extends Component {
     results: {},
   };
 
+   capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
   handleNext = () => {
     if (this.state.current === 1 && this.state.selectedItems.length > 2) {
       message.error("Select a maximum of two strategies");
@@ -161,18 +165,30 @@ class App extends Component {
         displayResults = results.data.map((result, index) => {
           return (
             <Col key={index}>
-              <Card border="primary" style={{ width: "18rem" }}>
+              <Card style={{ width: "18rem" }}>
                 <Card.Header>{result.company}</Card.Header>
                 <Card.Body>
                   <Card.Title>{result.name}</Card.Title>
                   <Card.Text>
-                    Number of stocks:
+                    Number of stocks : 
                     {result.count}
                   </Card.Text>
                   <Card.Text>
-                    Investment Strategy:
-                    {result.strategy}
+                    Current Stock Price :
+                    {result.currentPrice}
                   </Card.Text>
+                  <Card.Text>
+                    Investment Strategy :
+                    {this.capitalize(result.strategy)}
+                  </Card.Text>
+                  <Card.Text>
+                    Invested Amount :
+                    {Math.round((result.investedAmount),2)}
+                  </Card.Text><Card.Text>
+                    Invested Percentage :
+                    {Math.round((result.percentageInvested),2)}
+                  </Card.Text>
+                  
                 </Card.Body>
               </Card>
               <br />
@@ -328,7 +344,7 @@ class App extends Component {
             justifyContent: "center",
           }}
         >
-          <Row gutter={[16, 16]} span={10} offset={9}>
+          <Row gutter={[16, 25]} span={10} offset={10}>
             {" "}
             {displayResults}{" "}
           </Row>
