@@ -41,7 +41,7 @@ def portfolioGraphData():
 
     # Prepping arrays for sending
     r = requests.get(
-        'https://sandbox.iexapis.com/stable/stock/ADBE/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+        'https://cloud.iexapis.com/stable/stock/ADBE/chart/5d?token=' + API_KEY)
     for x in r.json():
         label.append(x['date'])
         value.append(0)
@@ -51,8 +51,8 @@ def portfolioGraphData():
     # Looping through each object of the request array
     for company in request.get_json()['data']:
         # print(company)
-        r = requests.get('https://sandbox.iexapis.com/stable/stock/' +
-                         company['company'] + '/chart/5d?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+        r = requests.get('https://cloud.iexapis.com/stable/stock/' +
+                         company['company'] + '/chart/5d?token=' + API_KEY)
 
         # Adding values to portfolio array
         i = 0
@@ -165,7 +165,7 @@ def stockSuggestions():
     data= []
     i = 0
     for company in finalCompanies:
-        companyDetails = requests.get('https://sandbox.iexapis.com/stable/stock/' + company + '/quote?token=Tpk_80fad4c250fd4d12bb8c5f61a6304b00')
+        companyDetails = requests.get('https://cloud.iexapis.com/stable/stock/' + company + '/quote?token=' + API_KEY)
         latestprice = companyDetails.json()['latestPrice']
         obj = {}
         obj['company'] = company
@@ -212,7 +212,7 @@ def home():
 
 # driver function
 if __name__ == '__main__':
-    app.run(debug=True)
-    #app.run(host='0.0.0.0', port = 5001)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port = 5000)
 
 # app.run(debug= True) # This has to be used while debugging. The other while deployment.
