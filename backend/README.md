@@ -1,29 +1,11 @@
-# Python Backend (Using Flask)
+### Suggestion Engine using Deep Learning Model Details
 
-## Flask is used for writing REST API's in python just like express and Node in JS
+#### Running installations and instructions :
+(not to be run for in-flow for running the application. It is a train-on-monthly frequency model hence, use below steps if explicitely want to retrain the model only- training time - about 30-40mins) This model needs to be run every 30 day interval in our case with refreshed stock data as input to maintain accuracy.
 
-## <https://www.geeksforgeeks.org/python-build-a-rest-api-using-flask/>
+#### Requirements :  Anaconda for Jupyter support (.ipynb), scikit learn, pandas, numpy, keras,
 
-## https://iexcloud.io/ is being used to get the current stock data.(API_KEY is used to retrieve data)
-
-### Python3 packages necessary
-
-sudo pip3 install flask-restful
-
-sudo pip3 install -U flask-cors
-
-sudo pip3 install -U python-dotenv                <https://pypi.org/project/python-dotenv/>
-
-sudo pip3 install -U requests
-
-Note: Python3 is a pre-req for this to run in any system. Check if pip3 is also there.
-
---------------------------- .env should be there that should contain API KEY from iexcould site.
-
-### ML and Deep Learning packages installations using conda 
-
-scikit learn, pandas, numpy, keras, 
-
+#### Installations :
 conda install Keras 
 
 conda install -c anaconda scikit-learn 
@@ -32,4 +14,10 @@ conda install pandas
 
 conda install numpy
 
+To explicitely run ML model : 
+1. Go to the backend folder
+2. Open StockPricesPredictorLSTM.ipynb file via Avaconda Navigator - Jupyter Notebook
+3. Change input 'stock file' location with the new refreshed stock sample file as required, 
+4. Run code cell by cell.
+5. Results are stored in .csv in same folder, which is being picked up by other internal APIs
 
