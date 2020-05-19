@@ -1,7 +1,10 @@
 ### Suggestion Engine using Deep Learning Model Details
 
 #### Running installations and instructions :
-(not to be run for in-flow for running the application. It is a train-on-monthly frequency model hence, use below steps if explicitely want to retrain the model only- training time - about 30-40mins) This model needs to be run every 30 day interval in our case with refreshed stock data as input to maintain accuracy.
+(Not to be Run for usual Application Running )
+
+-so can skip below steps for running Application-
+Below instructions are only to Run the model if model to be retrained, It is a train-on-monthly frequency model hence, use below steps only if explicitely want to retrain the model only- training time - about 30-40mins) This model needs to be run every 30 day interval in our case with refreshed stock data as input to maintain accuracy. 
 
 #### Requirements :  Anaconda for Jupyter support (.ipynb), scikit learn, pandas, numpy, keras,
 
