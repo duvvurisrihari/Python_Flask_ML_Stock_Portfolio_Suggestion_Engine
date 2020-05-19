@@ -17,7 +17,7 @@ conda install numpy
 To explicitely run ML model : 
 1. Go to the backend folder
 2. Open StockPricesPredictorLSTM.ipynb file via Avaconda Navigator - Jupyter Notebook
-3. Change csv file inputlocation from 'stockdata-4.csv' to new refreshed stockdata file, as required.
+3. Change csv file input location from 'stockdata-4.csv' to new refreshed stockdata file, as required.
 4. Run code cell by cell.
 5. Results are stored in a .csv in same folder, which is being picked up by other internal APIs
 
